@@ -1,0 +1,45 @@
+.idea/
+.settings/
+hs_err_pid*
+.project
+target/
+.classpath
+.DS_Store
+*jar*
+*jar*
+
+
+#IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
+
+# NetBeans
+nb-configuration.xml
+nbactions.xml
+# Visual Studio Code
+.vscode
+
+# OSX
+.DS_Store
+
+# Vim
+*.swp
+*.swo
+
+# VSCode
+lsp
+
+# patch
+*.orig
+*.rej
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+src/main/resources/META-INF/resources/
+
