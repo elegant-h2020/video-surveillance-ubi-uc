@@ -9,6 +9,7 @@
 	<name>Video Stream Analytics</name>
 
 	<modules>
+		<module>video-meta-analytics</module>
 		<module>video-stream-processor</module>
 		<module>video-stream-collector</module>
         <module>video-stream-similarity</module>

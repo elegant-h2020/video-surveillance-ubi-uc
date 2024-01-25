@@ -1,0 +1,32 @@
+version: "3"
+services:
+  coordinator:
+    image: nebulastream/nes-elegant-image:elegant-v0.6.16
+    entrypoint: ["bash", "-c", "nesCoordinator --configPath=/ubidemo/distributed_configuration/coordinator-master.yml"]
+    volumes:
+      - ../:/ubidemo
+    network_mode: host
+  mosquitto-control:
+    image: eclipse-mosquitto
+    ports:
+      - 1985:1985
+      - 9001:9001
+      - 9010:9010
+    volumes:
+      - ../mosquitto/config:/mosquitto/config
+    networks:
+      elegant-network-control:
+        ipv4_address: 172.31.2.11
+  ui-control:
+    image: nebulastream/nes-ui-image:latest
+    ports:
+      - 9000:9000
+    networks:
+      elegant-network-control:
+        ipv4_address: 172.31.2.14
+networks:
+  elegant-network-control:
+    ipam:
+      config:
+        - subnet: 172.31.2.0/24
+

@@ -1,0 +1,143 @@
+version: "3.8"
+services:
+  coordinator:
+    image: nebulastream/nes-executable-image:0.6.28
+    entrypoint: ["bash", "-c", "nesCoordinator --configPath=/tutorial/coordinator.yml --enableMonitoring=true"]
+    #entrypoint: ["bash", "-c", "nesCoordinator --rpcPort=1200 --restPort=8000 --enableMonitoring=true"]
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    volumes:
+      - ./:/tutorial
+    #network_mode: host
+    networks:
+      nebulastream-network:
+        ipv4_address: 172.31.0.2
+        
+  worker:
+    image: nebulastream/nes-executable-image:0.6.28
+    #entrypoint: ["bash", "-c", "sleep 3 && nesWorker --coordinatorPort=1200 --rpcPort=1215 --dataPort=1415 --numWorkerThreads=3"]
+    restart: unless-stopped
+    entrypoint: ["bash", "-c", "sleep 3 && nesWorker --configPath=/tutorial/worker-1.yml"]
+    volumes:
+      - ./:/tutorial
+    #network_mode: host
+    networks:
+      nebulastream-network:
+        ipv4_address: 172.31.0.3
+        
+  mosquitto:
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+      - 9001:9001
+    volumes:
+      - ./mosquitto:/mosquitto/config
+    #network_mode: host
+    networks:
+      nebulastream-network:
+        ipv4_address: 172.31.0.11
+  
+  postgres:
+    image: postgres:14.5-alpine
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "localhost", "5432"]
+      interval: 1s
+      timeout: 10s
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      PGPASSWORD: password
+    ports:
+      - 5431:5431
+    #network_mode: host
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      nebulastream-network:
+        ipv4_address: 172.31.0.5
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: elegant_ui_frontend
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - keycloak
+    #network_mode: host
+    networks:
+      nebulastream-network:
+        ipv4_address: 172.31.0.12
+
+  keycloak:
+    image: "quay.io/keycloak/keycloak:21.0.2"
+    command: ["start-dev", "--import-realm"]
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health/ready"]
+    environment:
+      - KC_DB=postgres
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=password
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+      - KC_METRICS_ENABLED=true
+      - KC_HEALTH_ENABLED=true
+      - KC_URL=http://localhost:8080
+      - KC_LOG=console 
+      - KC_LOG_LEVEL=DEBUG
+      - KC_LOG_CONSOLE_OUTPUT=json
+#      - KC_FEATURES=token-exchange
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - 8080:8080
+      - 8443:8443
+    #network_mode: host
+    volumes:
+      - ./realm.json:/opt/keycloak/data/import/realm.json:ro
+    networks:
+      nebulastream-network:
+        ipv4_address: 172.31.0.7
+ 
+  influxdb:
+   image: influxdb:2.4.0
+   environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: elegant
+      DOCKER_INFLUXDB_INIT_PASSWORD: elegantpass
+      DOCKER_INFLUXDB_INIT_ORG: elegantorg
+      DOCKER_INFLUXDB_INIT_BUCKET: elegantbucket
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: eleganttoken
+   #network_mode: host
+   restart: unless-stopped
+   ports:
+     - 8086:8086
+   networks:
+     nebulastream-network:
+       ipv4_address: 172.31.0.9
+       
+  telegraf:
+   image: telegraf:1.23.4
+   volumes:
+      - ./influxdbdata/telegraf.conf:/etc/telegraf/telegraf.conf
+   network_mode: host
+   restart: unless-stopped
+  # networks: #when using network in telegraf, it fails to write to influxdb
+   #  nebulastream-network:
+   #    ipv4_address: 172.31.0.8
+volumes:
+    postgres_data:
+      driver: local
+
+networks:
+  nebulastream-network:
+    ipam:
+      config:
+        - subnet: 172.31.0.0/24

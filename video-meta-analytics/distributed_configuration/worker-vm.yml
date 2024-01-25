@@ -1,0 +1,111 @@
+###
+### General configuration
+###
+logLevel: LOG_ERROR
+#logLevel: LOG_WARNING
+#logLevel: LOG_DEBUG
+
+queryCompiler:
+  queryCompilerType: "NAUTILUS_QUERY_COMPILER"
+
+###
+### Network configuration
+###
+localWorkerIp: 10.24.0.14
+coordinatorIp: 10.24.0.18
+numWorkerThreads: 4
+
+###
+### Physical source configuration
+###
+physicalSources:
+        - logicalSourceName: Transc_stream
+          physicalSourceName: nes_worker1
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/transc_data_1.csv
+                  numberOfBuffersToProduce: 1024
+                  numberOfTuplesToProducePerBuffer: 0
+                  skipHeader: true
+        - logicalSourceName: Transc_stream_1mb 
+          physicalSourceName: nes_worker2 
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/transc_data_1_1mb.csv 
+                  numberOfBuffersToProduce: 1024
+                  numberOfTuplesToProducePerBuffer: 0
+                  skipHeader: true
+        - logicalSourceName: Transc_stream_100mb 
+          physicalSourceName: nes_worker3 
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/transc_data_1_100mb.csv 
+                  numberOfBuffersToProduce: 1024
+                  numberOfTuplesToProducePerBuffer: 0
+                  skipHeader: true
+        - logicalSourceName: kafka_source
+          physicalSourceName: kafka_source1
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: example
+        - logicalSourceName: kafka_source_out
+          physicalSourceName: kafka_source_out
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: video-stream-out
+        - logicalSourceName: kafka_source_event
+          physicalSourceName: kafka_source_event
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: video-stream-event
+        - logicalSourceName: kafka_source_similarity
+          physicalSourceName: kafka_source_similarity
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: video-stream-similarity
+        - logicalSourceName: points
+          physicalSourceName: points_1
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/points.csv
+                  skipHeader: true
+        - logicalSourceName: ages
+          physicalSourceName: ages_1
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/ages.csv
+                  skipHeader: true
+        - logicalSourceName: video
+          physicalSourceName: video_1
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/video.csv
+                  skipHeader: true
+        - logicalSourceName: video2
+          physicalSourceName: video_2
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/video2.csv
+                  skipHeader: true
+        - logicalSourceName: video3
+          physicalSourceName: video_3
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/video3.csv
+                  skipHeader: true

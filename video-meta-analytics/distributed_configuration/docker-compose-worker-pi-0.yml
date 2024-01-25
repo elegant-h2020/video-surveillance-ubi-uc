@@ -1,0 +1,8 @@
+version: "3"
+services:
+  worker-pi-0:
+    image: nebulastream/nes-elegant-image:elegant-v0.6.16
+    entrypoint: ["bash", "-c", "sleep 3 && nesWorker --configPath=/ubidemo/distributed_configuration/worker-pi-0.yml"]
+    volumes:
+      - ../:/ubidemo
+    network_mode: host

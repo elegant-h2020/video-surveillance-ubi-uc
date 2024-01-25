@@ -1,0 +1,119 @@
+###
+### General configuration
+###
+logLevel: LOG_ERROR
+#logLevel: LOG_WARNING
+#logLevel: LOG_DEBUG
+optimizer:
+        distributedWindowChildThreshold: 3
+
+worker:
+  queryCompiler:
+    queryCompilerType: "NAUTILUS_QUERY_COMPILER"
+  localWorkerIp: 172.31.0.2
+  
+###
+### Network configuration
+###
+restIp: 172.31.0.2
+coordinatorIp: 172.31.0.2
+restPort: 8081
+#########################
+
+### Logical source configuration
+###
+logicalSources:
+        - logicalSourceName: Transc_stream
+          fields:
+                  - name: colorspace
+                    type: INT64
+                  - name: frame_width
+                    type: INT32
+                  - name: frame_height
+                    type: INT32
+                  - name: node_name
+                    type: TEXT
+                  - name: date
+                    type: TEXT
+                  - name: tmst_sec
+                    type: INT64
+                  - name: tmst
+                    type: INT64
+                  - name: num_faces
+                    type: INT64
+                  - name: imageID
+                    type: TEXT
+        - logicalSourceName: Transc_stream_1mb
+          fields:
+                  - name: colorspace
+                    type: INT64
+                  - name: frame_width
+                    type: INT32
+                  - name: frame_height
+                    type: INT32
+                  - name: node_name
+                    type: TEXT
+                  - name: date
+                    type: TEXT
+                  - name: tmst_sec
+                    type: INT64
+                  - name: tmst
+                    type: INT64
+                  - name: num_faces
+                    type: INT64
+                  - name: imageID
+                    type: TEXT
+        - logicalSourceName: Transc_stream_100mb
+          fields:
+                  - name: colorspace
+                    type: INT64
+                  - name: frame_width
+                    type: INT32
+                  - name: frame_height
+                    type: INT32
+                  - name: node_name
+                    type: TEXT
+                  - name: date
+                    type: TEXT
+                  - name: tmst_sec
+                    type: INT64
+                  - name: tmst
+                    type: INT64
+                  - name: num_faces
+                    type: INT64
+                  - name: imageID
+                    type: TEXT
+        - logicalSourceName: ages
+          fields:
+                  - name: timestamp
+                    type: TEXT
+                  - name: age
+                    type: INT32
+        - logicalSourceName: kafka_source
+          fields:
+                  - name: data
+                    type: TEXT
+        - logicalSourceName: points
+          fields:
+                  - name: x
+                    type: FLOAT64
+                  - name: y
+                    type: FLOAT64
+        - logicalSourceName: video
+          fields:
+                  - name: frame
+                    type: TEXT
+                  - name: number
+                    type: INT32
+        - logicalSourceName: video2
+          fields:
+                  - name: frame
+                    type: TEXT
+                  - name: number
+                    type: INT32
+        - logicalSourceName: video3
+          fields:
+                  - name: frame
+                    type: TEXT
+                  - name: number
+                    type: INT32
