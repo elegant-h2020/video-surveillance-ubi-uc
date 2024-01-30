@@ -2,6 +2,54 @@
 
 A collection of modules reqarding the ELEGANT project
 
+## Video-meta-analytics-module
+
+This module utilizes the NebulaStream Java Client to connect to a running nebulastream configuration
+and submit queries. The module contains a docker-compose from where you can instantiate a coordinator
+and a worker, which are the essential services of nebulastream. Under resources there are some sample  
+input sources to be used.  Sample configurations are given in coordinator.yml and worker-1.yml. There 
+is also a set of configurations under /distributed_configurations which contains the configuration 
+files (docker-compose.yml, coordinator.yml, worker.yml) for distributed topologies. 
+
+A sample Query through Java Client (more can be foynd in src/main/java/analytics/VideoAnaltyicsMeta.main):
+
+ ```java
+private static void dataPreProcessing(NebulaStreamRuntime ner, String stream_name) throws  Exception {
+
+        // Select a source from the registered ones
+        Query worker = ner.readFromSource(stream_name);
+
+        // Filter Operator
+        worker.filter(attribute("num_faces").lessThan(3));
+
+        // Map Operator
+        worker.map("frame_width", Expressions.literal(780));
+        worker.map("frame_height", Expressions.literal(310));
+        worker.map("colorspace", Expressions.literal(83));
+
+        // Sink Operator (FileSink)
+        worker.sink(new FileSink("/output_dataPreProcessing_query.csv", "CSV_FORMAT", true));
+
+        // Get Query ID
+        int queryId = ner.executeQuery(worker, "BottomUp");
+        System.out.println("Query placed for execution with id: " + queryId);
+        System.out.println(" *** \n");
+    }
+```
+
+The docker-compose offers also extra services such as the Elegant Devops Dashboard which is a web UI to visualize
+the configuration, queries, sources etc.
+
+## Experiments
+
+Under the /experiments directory there is a dedicated Python script for processing the query results and creating plots 
+for the execution times of queries on two different topologies, with 4 different input sizes. The /query_measurements 
+directory has to contain the execution results obtained from NES, following the name convention: "qX-sY-tZ.json" (where
+X=1-8 for queries, Y=1-4 for input size, and Z=1-2 for topology). For example, q2-s3-t2.json are the execution results
+of query #2 (dataPreProcessingDistributedwithMap) with input size 3 (in our case 10MB) running in topology 2 (Edge).
+Under /plots_execution_times there can be found the generated performance graphs, and under /query_plan_figures the query 
+plans are stored as image files.
+
 ## Video-capture-module
 This module is responsible for capturing 
 video-frames(/dev/video0) using the OpenCV library 
