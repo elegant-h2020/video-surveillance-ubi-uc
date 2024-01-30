@@ -13,6 +13,11 @@
 	<dependencies>
 		<!-- Flink -->
 
+		<dependency>
+			<groupId>stream.nebula</groupId>
+			<artifactId>nebulastream-java-client</artifactId>
+			<version>0.0.83</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
