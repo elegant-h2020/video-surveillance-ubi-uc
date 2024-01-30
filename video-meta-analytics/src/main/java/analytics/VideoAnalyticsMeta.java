@@ -14,6 +14,7 @@ import stream.nebula.udf.MapFunction;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static stream.nebula.expression.Expressions.attribute;
 
@@ -128,7 +129,7 @@ public class VideoAnalyticsMeta {
         Query worker = ner.readFromSource(stream_name);
 
         // Window Operator chained with Group By and Sum
-        worker.window(TumblingWindow.of(EventTime.eventTime("tmst"), TimeMeasure.minutes(5))).
+        worker.window(TumblingWindow.of(EventTime.eventTime("tmst"), TimeMeasure.minutes(1))).
                 byKey("node_name").apply(Aggregation.sum("num_faces"));
 
         // Sink Operator (FileSink)
@@ -267,19 +268,21 @@ public class VideoAnalyticsMeta {
     public static void main(String[] args) throws Exception {
         String stream_name_1 = "Transc_stream";
         String stream_name_2 = "Transc_stream_1mb";
-        String stream_name_3 = "Transc_stream_100mb";
-        String stream_name_4 = "Transc_stream_2";
+        String stream_name_3 = "Transc_stream_1mb";
+        String stream_name_4 = "Transc_stream_100mb";
+        String stream_name_5 = "Transc_stream_2";
         String stream_ages_name = "ages";
         String stream_video_name_1 = "video";
         String stream_video_name_2 = "video2";
         String stream_video_name_3 = "video3";
+        String stream_video_name_4 = "video4";
         String kafka_source_name = "kafka_source";
 
 
         // Configure network connection to NES REST server
         System.out.println(" *** connection:\n");
         NebulaStreamRuntime ner = NebulaStreamRuntime.getRuntime();
-        ner.getConfig().setHost("212.101.173.11").setPort("8081");
+        ner.getConfig().setHost("192.168.7.40").setPort("8081");
         System.out.println(" *** connected:\n");
 
         // Enter data using BufferReader
@@ -292,7 +295,7 @@ public class VideoAnalyticsMeta {
                     "\n '1' to execute dataPreProcessing query," +
                     "\n '2' to execute dataPreProcessingDistributed query," +
                     "\n '3' to execute crowdEstimate query," +
-                    "\n '5' to execute fiterTimestamp query," +
+                    "\n '4' to execute fiterTimestamp query," +
                     "\n '5' to execute Kafka readi query," +
                     "\n '6' to execute Kafka read and store query," +
                     "\n '7' to execute videoFramesPreProcessingWithMap query," +
@@ -306,20 +309,57 @@ public class VideoAnalyticsMeta {
                   add_kafka_stream(ner, kafka_source_name);
                   add_stream(ner, stream_name_1);
             }
-            else if (input.equals("1"))
+            else if (input.equals("1")) {
                 dataPreProcessing(ner, stream_name_1);
-            else if (input.equals("2"))
-                dataPreProcessingDistributed(ner, stream_name_1, stream_name_2, stream_name_3);
-            else if (input.equals("3"))
+                TimeUnit.SECONDS.sleep(20);
+                dataPreProcessing(ner, stream_name_2);
+                TimeUnit.SECONDS.sleep(20);
+                dataPreProcessing(ner, stream_name_3);
+                TimeUnit.SECONDS.sleep(20);
+                dataPreProcessing(ner, stream_name_4);
+            }
+            else if (input.equals("2")) {
+                dataPreProcessingDistributed(ner, stream_name_1, stream_name_1, stream_name_1);
+                TimeUnit.SECONDS.sleep(20);
+                dataPreProcessingDistributed(ner, stream_name_2, stream_name_2, stream_name_2);
+                TimeUnit.SECONDS.sleep(20);
+                dataPreProcessingDistributed(ner, stream_name_3, stream_name_3, stream_name_3);
+                TimeUnit.SECONDS.sleep(20);
+                dataPreProcessingDistributed(ner, stream_name_4, stream_name_4, stream_name_4);
+            }
+            else if (input.equals("3")) {
                 crowdEstimate(ner, stream_name_1);
-            else if (input.equals("4"))
+//                TimeUnit.SECONDS.sleep(20);
+//                crowdEstimate(ner, stream_name_2);
+//                TimeUnit.SECONDS.sleep(20);
+//                crowdEstimate(ner, stream_name_3);
+//                TimeUnit.SECONDS.sleep(20);
+//                crowdEstimate(ner, stream_name_4);
+            }
+            else if (input.equals("4")) {
                 filterTimestamps(ner, stream_name_1);
+                TimeUnit.SECONDS.sleep(20);
+                filterTimestamps(ner, stream_name_2);
+                TimeUnit.SECONDS.sleep(20);
+                filterTimestamps(ner, stream_name_3);
+                TimeUnit.SECONDS.sleep(20);
+                filterTimestamps(ner, stream_name_4);
+                TimeUnit.SECONDS.sleep(20);
+            }
             else if (input.equals("5"))
                 readFromKafka(ner, kafka_source_name);
             else if (input.equals("6"))
                 readFromKafkaStoreToKafka(ner, kafka_source_name);
-            else if (input.equals("7"))
+            else if (input.equals("7")) {
+                videoFramesPreProcessingWithMap(ner, stream_video_name_1);
+                 TimeUnit.SECONDS.sleep(20);
                 videoFramesPreProcessingWithMap(ner, stream_video_name_2);
+                TimeUnit.SECONDS.sleep(20);
+                videoFramesPreProcessingWithMap(ner, stream_video_name_3);
+                TimeUnit.SECONDS.sleep(20);
+                videoFramesPreProcessingWithMap(ner, stream_video_name_4);
+                TimeUnit.SECONDS.sleep(20);
+            }
             else if (input.equals("8"))
                 ageProcessingWithMap(ner, stream_ages_name);
 

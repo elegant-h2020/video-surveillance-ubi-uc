@@ -19,11 +19,11 @@ numWorkerThreads: 4
 ### Physical source configuration
 ###
 physicalSources:
-        - logicalSourceName: Transc_stream
-          physicalSourceName: nes_worker1
+        - logicalSourceName: Transc_stream 
+          physicalSourceName: nes_worker1 
           type: CSV_SOURCE
           configuration:
-                  filePath: /ubidemo/resources/transc_data_1.csv
+                  filePath: /ubidemo/resources/transc_data_1.csv 
                   numberOfBuffersToProduce: 1024
                   numberOfTuplesToProducePerBuffer: 0
                   skipHeader: true
@@ -35,16 +35,24 @@ physicalSources:
                   numberOfBuffersToProduce: 1024
                   numberOfTuplesToProducePerBuffer: 0
                   skipHeader: true
-        - logicalSourceName: Transc_stream_100mb 
+        - logicalSourceName: Transc_stream_10mb 
           physicalSourceName: nes_worker3 
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/transc_data_1_10mb.csv 
+                  numberOfBuffersToProduce: 1024
+                  numberOfTuplesToProducePerBuffer: 0
+                  skipHeader: true
+        - logicalSourceName: Transc_stream_100mb 
+          physicalSourceName: nes_worker4 
           type: CSV_SOURCE
           configuration:
                   filePath: /ubidemo/resources/transc_data_1_100mb.csv 
                   numberOfBuffersToProduce: 1024
                   numberOfTuplesToProducePerBuffer: 0
                   skipHeader: true
-        - logicalSourceName: kafka_source
-          physicalSourceName: kafka_source1
+        - logicalSourceName: kafka_source 
+          physicalSourceName: kafka_source1 
           type: KAFKA_SOURCE
           configuration:
                   autoCommit: 1
@@ -52,33 +60,6 @@ physicalSources:
                   offsetMode: earliest
                   groupId: ubitech
                   topic: example
-        - logicalSourceName: kafka_source_out
-          physicalSourceName: kafka_source_out
-          type: KAFKA_SOURCE
-          configuration:
-                  autoCommit: 1
-                  brokers: 10.24.0.6:29092
-                  offsetMode: earliest
-                  groupId: ubitech
-                  topic: video-stream-out
-        - logicalSourceName: kafka_source_event
-          physicalSourceName: kafka_source_event
-          type: KAFKA_SOURCE
-          configuration:
-                  autoCommit: 1
-                  brokers: 10.24.0.6:29092
-                  offsetMode: earliest
-                  groupId: ubitech
-                  topic: video-stream-event
-        - logicalSourceName: kafka_source_similarity
-          physicalSourceName: kafka_source_similarity
-          type: KAFKA_SOURCE
-          configuration:
-                  autoCommit: 1
-                  brokers: 10.24.0.6:29092
-                  offsetMode: earliest
-                  groupId: ubitech
-                  topic: video-stream-similarity
         - logicalSourceName: points
           physicalSourceName: points_1
           type: CSV_SOURCE
@@ -108,4 +89,10 @@ physicalSources:
           type: CSV_SOURCE
           configuration:
                   filePath: /ubidemo/resources/video3.csv
+                  skipHeader: true
+        - logicalSourceName: video4
+          physicalSourceName: video_4
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/video4.csv
                   skipHeader: true

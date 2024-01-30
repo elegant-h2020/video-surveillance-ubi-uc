@@ -47,4 +47,6 @@ src/main/resources/META-INF/resources/
 video-meta-analytics/target/
 video-meta-analytics/resources/video3.csv
 video-meta-analytics/resources/transc_data_1_100mb.csv
+video-meta-analytics/resources/transc_data_1_10mb.csv
+video-meta-analytics/resources/video4.csv
 

@@ -35,8 +35,16 @@ physicalSources:
                   numberOfBuffersToProduce: 1024
                   numberOfTuplesToProducePerBuffer: 0
                   skipHeader: true
-        - logicalSourceName: Transc_stream_100mb 
+        - logicalSourceName: Transc_stream_10mb 
           physicalSourceName: nes_worker3 
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/transc_data_1_10mb.csv 
+                  numberOfBuffersToProduce: 1024
+                  numberOfTuplesToProducePerBuffer: 0
+                  skipHeader: true
+        - logicalSourceName: Transc_stream_100mb 
+          physicalSourceName: nes_worker4 
           type: CSV_SOURCE
           configuration:
                   filePath: /ubidemo/resources/transc_data_1_100mb.csv 
@@ -81,4 +89,10 @@ physicalSources:
           type: CSV_SOURCE
           configuration:
                   filePath: /ubidemo/resources/video3.csv
+                  skipHeader: true
+        - logicalSourceName: video4
+          physicalSourceName: video_4
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /ubidemo/resources/video4.csv
                   skipHeader: true

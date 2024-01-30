@@ -62,6 +62,26 @@ logicalSources:
                     type: INT64
                   - name: imageID
                     type: TEXT
+        - logicalSourceName: Transc_stream_10mb
+          fields:
+                  - name: colorspace
+                    type: INT64
+                  - name: frame_width
+                    type: INT32
+                  - name: frame_height
+                    type: INT32
+                  - name: node_name
+                    type: TEXT
+                  - name: date
+                    type: TEXT
+                  - name: tmst_sec
+                    type: INT64
+                  - name: tmst
+                    type: INT64
+                  - name: num_faces
+                    type: INT64
+                  - name: imageID
+                    type: TEXT
         - logicalSourceName: Transc_stream_100mb
           fields:
                   - name: colorspace
@@ -111,6 +131,12 @@ logicalSources:
                   - name: number
                     type: INT32
         - logicalSourceName: video3
+          fields:
+                  - name: frame
+                    type: TEXT
+                  - name: number
+                    type: INT32
+        - logicalSourceName: video4
           fields:
                   - name: frame
                     type: TEXT
