@@ -60,6 +60,33 @@ physicalSources:
                   offsetMode: earliest
                   groupId: ubitech
                   topic: example
+        - logicalSourceName: kafka_source_out
+          physicalSourceName: kafka_source_out
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: video-stream-out
+        - logicalSourceName: kafka_source_event
+          physicalSourceName: kafka_source_event
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: video-stream-event
+        - logicalSourceName: kafka_source_similarity
+          physicalSourceName: kafka_source_similarity
+          type: KAFKA_SOURCE
+          configuration:
+                  autoCommit: 1
+                  brokers: 10.24.0.6:29092
+                  offsetMode: earliest
+                  groupId: ubitech
+                  topic: video-stream-similarity
         - logicalSourceName: points
           physicalSourceName: points_1
           type: CSV_SOURCE

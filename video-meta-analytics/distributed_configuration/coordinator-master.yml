@@ -108,10 +108,49 @@ logicalSources:
                     type: TEXT
                   - name: age
                     type: INT32
+
         - logicalSourceName: kafka_source
           fields:
                   - name: data
                     type: TEXT
+        - logicalSourceName: kafka_source_out
+          fields:
+                  - name: data
+                    type: TEXT
+                  - name: cameraId
+                    type: TEXT
+                  - name: timestamp
+                    type: TEXT
+                  - name: rows
+                    type: INT32
+                  - name: cols
+                    type: INT32
+                  - name: type
+                    type: INT32
+        - logicalSourceName: kafka_source_event
+          fields:
+                  - name: data
+                    type: TEXT
+                  - name: cameraId
+                    type: TEXT
+                  - name: timestamp
+                    type: TEXT
+                  - name: rows
+                    type: INT32
+                  - name: cols
+                    type: INT32
+                  - name: type
+                    type: INT32
+        - logicalSourceName: kafka_source_similarity
+          fields:
+                  - name: cameraId
+                    type: TEXT
+                  - name: timestamp
+                    type: TEXT
+                  - name: rows
+                    type: INT32
+                  - name: cols
+                    type: INT32
         - logicalSourceName: points
           fields:
                   - name: x
