@@ -1,0 +1,8 @@
+{
+	"tool" : "JBMC",
+	"isJarFile" : false,
+	"jarName" : "",
+	"className": "codes.VideoUseCase",
+	"isMethod": false,
+	"methodName": "codes.VideoUseCase.main:(Ljava/lang/String;)Z"
+}

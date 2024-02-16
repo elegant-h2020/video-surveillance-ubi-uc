@@ -1,0 +1,7 @@
+curl -X POST -H "Content-Type: multipart/form-data" -F "file=@/home/vmatsoukas/Documents/Ubitech_Projects/video-surveillance-ubi-uc/verificationExamples/codes/VideoUseCase.class" -F "request=@/home/vmatsoukas/Documents/Ubitech_Projects/video-surveillance-ubi-uc/verificationExamples/requests/request-videoUseCaseClass.json" http://localhost:8080/Elegant-Code-Verification-Service-1.0-SNAPSHOT/api/verification/newEntry
+
+curl -X POST -H "Content-Type: multipart/form-data" -F "file=@/home/vmatsoukas/Documents/Ubitech_Projects/video-surveillance-ubi-uc/verificationExamples/videoUseCase.jar" -F "request=@/home/vmatsoukas/Documents/Ubitech_Projects/video-surveillance-ubi-uc/verificationExamples/requests/request-videoUseCaseJar.json" http://localhost:8080/Elegant-Code-Verification-Service-1.0-SNAPSHOT/api/verification/newEntry
+
+curl http://0.0.0.0:8080/Elegant-Code-Verification-Service-1.0-SNAPSHOT/api/verification/getEntry?entryId=0
+
+curl http://0.0.0.0:8080/Elegant-Code-Verification-Service-1.0-SNAPSHOT/api/verification/getEntry?entryId=1
