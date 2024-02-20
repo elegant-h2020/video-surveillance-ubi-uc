@@ -22,8 +22,8 @@ public class OcrProcessor {
         // nes-elegant-image includes opencv so the following line is kept for dev usage
         System.load("/opt/opencv-4.5.4/build/lib/libopencv_java454.so");
 
-        String modelPath = "/home/vmatsoukas/Documents/Ubitech_Projects/TheRaceTeamGlaux-main/imageprocessor/handwriting.model";
-        String imagePath = "/home/vmatsoukas/Documents/Ubitech_Projects/TheRaceTeamGlaux-main/imageprocessor/images/hello_world.png";
+        String modelPath = "/handwriting.model";
+        String imagePath = "/hello_world.png";
 
         // Load the handwriting OCR model
         System.out.println("[INFO] Loading handwriting OCR model...");
