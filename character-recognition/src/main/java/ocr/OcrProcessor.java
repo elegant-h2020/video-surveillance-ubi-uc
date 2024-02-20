@@ -22,8 +22,8 @@ public class OcrProcessor {
         // nes-elegant-image includes opencv so the following line is kept for dev usage
         System.load("/opt/opencv-4.5.4/build/lib/libopencv_java454.so");
 
-        String modelPath = "path/to/handwriting.model";
-        String imagePath = "path/to//hello_world.png";
+        String modelPath = "/home/vmatsoukas/Documents/Ubitech_Projects/TheRaceTeamGlaux-main/imageprocessor/handwriting.model";
+        String imagePath = "/home/vmatsoukas/Documents/Ubitech_Projects/TheRaceTeamGlaux-main/imageprocessor/images/hello_world.png";
 
         // Load the handwriting OCR model
         System.out.println("[INFO] Loading handwriting OCR model...");
@@ -47,9 +47,10 @@ public class OcrProcessor {
         return Imgcodecs.imdecode(new MatOfByte(decodedBytes), Imgcodecs.IMREAD_COLOR);
     }
 
-    private void processImage(String imagePath, ComputationGraph model) {
-        Mat inputMatImage = Imgcodecs.imread(imagePath);
+    protected static String processImage(String encodedImage, ComputationGraph model) {
 
+//        Mat inputMatImage = Imgcodecs.imread(imagePath);
+        Mat inputMatImage = decodeStringToImage(encodedImage);
         // Convert the image to grayscale
         Mat grayscaleImage = new Mat();
         Imgproc.cvtColor(inputMatImage, grayscaleImage, Imgproc.COLOR_BGR2GRAY);
@@ -100,6 +101,9 @@ public class OcrProcessor {
                     Imgproc.resize(threshImage, threshImage, new Size((32.0 / tH) * tW, 32));
                 }
 
+                tH = threshImage.rows();
+                tW = threshImage.cols();
+
                 int dX = (int) Math.max(0, (32 - tW) / 2.0);
                 int dY = (int) Math.max(0, (32 - tH) / 2.0);
 
@@ -114,7 +118,8 @@ public class OcrProcessor {
 
                 // Expand dimensions to match the expected input format
                 Mat expandedImage = new Mat();
-                Core.merge(new java.util.ArrayList<>(java.util.Collections.singletonList(paddedFloatImage)), expandedImage);                INDArray expandedImageIND = imageToINDArray(expandedImage);
+                Core.merge(new java.util.ArrayList<>(java.util.Collections.singletonList(paddedFloatImage)), expandedImage);
+                INDArray expandedImageIND = imageToINDArray(expandedImage); //check this functionality
                 chars.add(new CustomPair<>(expandedImageIND, new Rect((int) x, (int) y, (int) w, (int) h)));
             }
         }
@@ -126,14 +131,55 @@ public class OcrProcessor {
             charsMat.add(pair.getKey());
         }
 
-        // code to be completed here
         // Start making predictions with the model
         INDArray charArrayNDArray = Nd4j.vstack(charsMat);
         INDArray[] preds = model.output(charArrayNDArray);
 
-        // Make predictions with the model
 
-        System.out.println("G");
+        INDArray reshapedPreds = Nd4j.toFlattened('c', preds).reshape('c', boxes.size(), -1);
+        float[][] reshapedData = reshapedPreds.toFloatMatrix();
+
+        // Define label names
+        String labelNames = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < boxes.size(); i++) {
+            int maxIdx = 0;
+            float maxProb = 0.0f;
+
+            // Find index of the label with the largest corresponding probability
+            for (int j = 0; j < reshapedData[i].length; j++) {
+                if (reshapedData[i][j] > maxProb) {
+                    maxProb = reshapedData[i][j];
+                    maxIdx = j;
+                }
+            }
+            // Extract the label
+            char label = labelNames.charAt(maxIdx);
+            result.append(label);
+        }
+        System.out.println("the result is" + result);
+        return result.toString();
+    }
+
+
+    protected static Model loadOCRmodel(String modelPath){
+
+        // Load the handwriting OCR model
+        System.out.println("[INFO] Loading handwriting OCR model...");
+        Model model;
+        try {
+            model = KerasModelImport.importKerasModelAndWeights(modelPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidKerasConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedKerasConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        return model;
 
     }
 
@@ -142,9 +188,9 @@ public class OcrProcessor {
         image.convertTo(matOfFloat, CvType.CV_32F);
         float[] floatArray = new float[(int) (matOfFloat.total() * matOfFloat.channels())];
         matOfFloat.get(0, 0, floatArray);
-        return Nd4j.create(floatArray).reshape(1, 32, 32, 1); //1 32 32 1
+        return Nd4j.create(floatArray).reshape(1, 32, 32, 1);
     }
-    public class CustomPair<K, V> {
+    public static class CustomPair<K, V> {
         private final K key;
         private final V value;
 

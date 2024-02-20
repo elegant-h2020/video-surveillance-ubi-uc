@@ -15,7 +15,11 @@
             <artifactId>opencv</artifactId>
             <version>4.5.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>stream.nebula</groupId>
+            <artifactId>nebulastream-java-client</artifactId>
+            <version>0.0.83</version>
+        </dependency>
         <!-- Deeplearning4j -->
         <dependency>
             <groupId>org.deeplearning4j</groupId>
