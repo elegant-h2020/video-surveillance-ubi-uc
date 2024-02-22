@@ -1,16 +1,23 @@
 ###
 ### General configuration
 ###
-logLevel: LOG_ERROR
+#logLevel: LOG_ERROR
 #logLevel: LOG_WARNING
-#logLevel: LOG_DEBUG
+logLevel: LOG_DEBUG
 optimizer:
         distributedWindowChildThreshold: 3
-
 worker:
   queryCompiler:
     queryCompilerType: "NAUTILUS_QUERY_COMPILER"
   localWorkerIp: 10.24.0.18
+  numberOfBuffersInGlobalBufferManager: 128
+  numberOfBuffersInSourceLocalBufferPool: 64
+  numberOfBuffersPerWorker: 64
+
+
+elegant:
+  transferRate: "1000"
+  plannerServiceURL: "http://localhost:8082/planner/schedule"
 ###
 ### Network configuration
 ###
@@ -181,3 +188,23 @@ logicalSources:
                     type: TEXT
                   - name: number
                     type: INT32
+        - logicalSourceName: ocr
+          fields:
+            - name: encodedInputImage
+              type: TEXT
+            - name: realText
+              type: TEXT
+        - logicalSourceName: vulnerabilities
+          fields:
+            - name: accessvector
+              type: TEXT
+            - name: name
+              type: TEXT
+            - name: cvssversion
+              type: INT32
+            - name: attackvector
+              type: TEXT
+            - name: cvssscore
+              type: FLOAT32
+            - name: networktext
+              type: TEXT

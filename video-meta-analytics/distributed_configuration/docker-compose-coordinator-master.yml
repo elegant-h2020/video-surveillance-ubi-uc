@@ -1,7 +1,7 @@
 version: "3"
 services:
   coordinator:
-    image: nebulastream/nes-elegant-image:elegant-v0.6.16
+    image: nebulastream/nes-elegant-image:elegant-v0.6.19-java-sources
     entrypoint: ["bash", "-c", "nesCoordinator --configPath=/ubidemo/distributed_configuration/coordinator-master.yml"]
     volumes:
       - ../:/ubidemo

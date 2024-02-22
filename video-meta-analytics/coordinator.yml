@@ -143,3 +143,23 @@ logicalSources:
                     type: TEXT
                   - name: number
                     type: INT32
+        - logicalSourceName: ocr
+          fields:
+            - name: encodedInputImage
+              type: TEXT
+            - name: realText
+              type: TEXT
+        - logicalSourceName: vulnerabilities
+          fields:
+            - name: accessvector
+              type: TEXT
+            - name: name
+              type: TEXT
+            - name: cvssversion
+              type: INT32
+            - name: attackvector
+              type: TEXT
+            - name: cvssscore
+              type: FLOAT32
+            - name: networktext
+              type: TEXT

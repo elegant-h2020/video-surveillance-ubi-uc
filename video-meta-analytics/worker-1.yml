@@ -97,4 +97,16 @@ physicalSources:
           configuration:
                   filePath: /tutorial/resources/video4.csv
                   skipHeader: true
+        - logicalSourceName: ocr
+          physicalSourceName: ocr
+          type: CSV_SOURCE
+          configuration:
+                  filePath: /tutorial/resources/ocr.csv
+                  skipHeader: true
+        - logicalSourceName: vulnerabilities
+          physicalSourceName: vulnerabilities_1
+          type: CSV_SOURCE
+          configuration:
+            filePath: /tutorial/resources/vulnerabilities.csv
+            skipHeader: false
 workerId: 2

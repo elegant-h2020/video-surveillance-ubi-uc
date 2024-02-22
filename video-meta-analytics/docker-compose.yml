@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   coordinator:
-    image: nebulastream/nes-executable-image:0.6.28
+    image: nebulastream/nes-elegant-image:elegant-v0.6.16
     entrypoint: ["bash", "-c", "nesCoordinator --configPath=/tutorial/coordinator.yml --enableMonitoring=true"]
     #entrypoint: ["bash", "-c", "nesCoordinator --rpcPort=1200 --restPort=8000 --enableMonitoring=true"]
     restart: unless-stopped
@@ -15,7 +15,7 @@ services:
         ipv4_address: 172.31.0.2
         
   worker:
-    image: nebulastream/nes-executable-image:0.6.28
+    image: nebulastream/nes-elegant-image:elegant-v0.6.16
     #entrypoint: ["bash", "-c", "sleep 3 && nesWorker --coordinatorPort=1200 --rpcPort=1215 --dataPort=1415 --numWorkerThreads=3"]
     restart: unless-stopped
     entrypoint: ["bash", "-c", "sleep 3 && nesWorker --configPath=/tutorial/worker-1.yml"]

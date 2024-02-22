@@ -1,9 +1,9 @@
 ###
 ### General configuration
 ###
-logLevel: LOG_ERROR
+#logLevel: LOG_ERROR
 #logLevel: LOG_WARNING
-#logLevel: LOG_DEBUG
+logLevel: LOG_DEBUG
 
 queryCompiler:
   queryCompilerType: "NAUTILUS_QUERY_COMPILER"
@@ -123,3 +123,15 @@ physicalSources:
           configuration:
                   filePath: /ubidemo/resources/video4.csv
                   skipHeader: true
+        - logicalSourceName: ocr
+          physicalSourceName: ocr
+          type: CSV_SOURCE
+          configuration:
+            filePath: /ubidemo/resources/ocr.csv
+            skipHeader: true
+        - logicalSourceName: vulnerabilities
+          physicalSourceName: vulnerabilities_1
+          type: CSV_SOURCE
+          configuration:
+            filePath: /tutorial/resources/vulnerabilities.csv
+            skipHeader: false

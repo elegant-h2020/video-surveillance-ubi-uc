@@ -1,7 +1,7 @@
 version: "3"
 services:
   worker-vm:
-    image: nebulastream/nes-elegant-image:elegant-v0.6.16
+    image: nebulastream/nes-elegant-image:elegant-v0.6.19-java-sources
     entrypoint: ["bash", "-c", "sleep 3 && nesWorker --configPath=/ubidemo/distributed_configuration/worker-vm.yml"]
     volumes:
       - ../:/ubidemo
