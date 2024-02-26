@@ -75,7 +75,7 @@ public class VideoAnalyticsMeta {
         worker.map("colorspace", Expressions.literal(83));
 
         // Sink Operator (FileSink)
-        worker.sink(new FileSink("/output_dataPreProcessing_query.csv", "CSV_FORMAT", true));
+        worker.sink(new FileSink("/ubidemo/output/output_dataPreProcessing_query.csv", "CSV_FORMAT", true));
 
         // Get Query ID
         int queryId = ner.executeQuery(worker, "BottomUp");
@@ -97,7 +97,7 @@ public class VideoAnalyticsMeta {
         worker1.map("frame_width", Expressions.literal(780));
         worker1.map("frame_height", Expressions.literal(310));
         worker1.map("colorspace", Expressions.literal(83));
-        worker1.sink(new FileSink("/output_dataPreProcessingDistributed_query_worker_1.csv", "CSV_FORMAT", true));
+        worker1.sink(new FileSink("/ubidemo/output/output/output_dataPreProcessingDistributed_query_worker_1.csv", "CSV_FORMAT", true));
         int queryIdWorker1 = ner.executeQuery(worker1, "BottomUp");
 
         // Operations for worker2: Filter, Map, Map, Map, Sink (FileSink)
@@ -105,7 +105,7 @@ public class VideoAnalyticsMeta {
         worker2.map("frame_width", Expressions.literal(780));
         worker2.map("frame_height", Expressions.literal(310));
         worker2.map("colorspace", Expressions.literal(83));
-        worker2.sink(new FileSink("/output_dataPreProcessingDistributed_query_worker_2.csv", "CSV_FORMAT", true));
+        worker2.sink(new FileSink("/ubidemo/output/output_dataPreProcessingDistributed_query_worker_2.csv", "CSV_FORMAT", true));
         int queryIdWorker2 = ner.executeQuery(worker2, "BottomUp");
 
         // Operations for worker3: Filter, Map, Map, Map, Sink (FileSink)
@@ -113,7 +113,7 @@ public class VideoAnalyticsMeta {
         worker3.map("frame_width", Expressions.literal(780));
         worker3.map("frame_height", Expressions.literal(310));
         worker3.map("colorspace", Expressions.literal(83));
-        worker3.sink(new FileSink("/output_dataPreProcessingDistributed_query_ worker_3.csv", "CSV_FORMAT", true));
+        worker3.sink(new FileSink("/ubidemo/output/output_dataPreProcessingDistributed_query_ worker_3.csv", "CSV_FORMAT", true));
         int queryIdWorker3 = ner.executeQuery(worker3, "BottomUp");
 
         System.out.println("QueryW1 placed for execution with id: " + queryIdWorker1);
@@ -133,7 +133,7 @@ public class VideoAnalyticsMeta {
                 byKey("node_name").apply(Aggregation.sum("num_faces"));
 
         // Sink Operator (FileSink)
-        worker.sink(new FileSink("/output_crowdEstimate_query.csv", "CSV_FORMAT", true));
+        worker.sink(new FileSink("/ubidemo/output/output_crowdEstimate_query.csv", "CSV_FORMAT", true));
 
         // Get Query ID
         int queryId = ner.executeQuery(worker, "BottomUp");
@@ -152,7 +152,7 @@ public class VideoAnalyticsMeta {
         worker.filter(attribute("num_faces").equalTo(1));
 
         // Sink Operator (FileSink)
-        worker.sink(new FileSink("/output_timestamp_query.csv", "CSV_FORMAT", true));
+        worker.sink(new FileSink("/tutorial/output_timestamp_query.csv", "CSV_FORMAT", true));
 
         // Get Query ID
         int queryId = ner.executeQuery(worker, "BottomUp");
@@ -166,7 +166,7 @@ public class VideoAnalyticsMeta {
         Query worker = ner.readFromSource(stream_name);
 
         // Sink Operator (FileSink)
-        worker.sink(new FileSink("/output_kafka_query.csv", "CSV_FORMAT", true));
+        worker.sink(new FileSink("/ubidemo/output/output_kafka_query.csv", "CSV_FORMAT", true));
 
         // Get Query ID
         int queryId = ner.executeQuery(worker, "BottomUp");
@@ -198,7 +198,7 @@ public class VideoAnalyticsMeta {
                 .map(new FrameMapper());
 
         // Sink Operator (FileSink)
-        worker.sink(new FileSink("/output_videoFramesPreProcessingWithMap_query.csv", "CSV_FORMAT", true));
+        worker.sink(new FileSink("/ubidemo/output/output_videoFramesPreProcessingWithMap_query.csv", "CSV_FORMAT", true));
 
         // Get Query ID
         int queryId = ner.executeQuery(worker, "BottomUp");
@@ -237,7 +237,7 @@ public class VideoAnalyticsMeta {
                 .map(new AgeMapper());
 
         // Sink Operator (FileSink)
-        worker.sink(new FileSink("/output_ageProcessingWithMap_query.csv", "CSV_FORMAT", true));
+        worker.sink(new FileSink("/ubidemo/output/output_ageProcessingWithMap_query.csv", "CSV_FORMAT", true));
 
         // Get Query ID
         int queryId = ner.executeQuery(worker, "BottomUp");
@@ -282,7 +282,7 @@ public class VideoAnalyticsMeta {
         // Configure network connection to NES REST server
         System.out.println(" *** connection:\n");
         NebulaStreamRuntime ner = NebulaStreamRuntime.getRuntime();
-        ner.getConfig().setHost("192.168.7.40").setPort("8081");
+        ner.getConfig().setHost("localhost").setPort("8081");
         System.out.println(" *** connected:\n");
 
         // Enter data using BufferReader
@@ -311,21 +311,21 @@ public class VideoAnalyticsMeta {
             }
             else if (input.equals("1")) {
                 dataPreProcessing(ner, stream_name_1);
-                TimeUnit.SECONDS.sleep(20);
-                dataPreProcessing(ner, stream_name_2);
-                TimeUnit.SECONDS.sleep(20);
-                dataPreProcessing(ner, stream_name_3);
-                TimeUnit.SECONDS.sleep(20);
-                dataPreProcessing(ner, stream_name_4);
+//                TimeUnit.SECONDS.sleep(20);
+//                dataPreProcessing(ner, stream_name_2);
+//                TimeUnit.SECONDS.sleep(20);
+//                dataPreProcessing(ner, stream_name_3);
+//                TimeUnit.SECONDS.sleep(20);
+//                dataPreProcessing(ner, stream_name_4);
             }
             else if (input.equals("2")) {
                 dataPreProcessingDistributed(ner, stream_name_1, stream_name_1, stream_name_1);
-                TimeUnit.SECONDS.sleep(20);
-                dataPreProcessingDistributed(ner, stream_name_2, stream_name_2, stream_name_2);
-                TimeUnit.SECONDS.sleep(20);
-                dataPreProcessingDistributed(ner, stream_name_3, stream_name_3, stream_name_3);
-                TimeUnit.SECONDS.sleep(20);
-                dataPreProcessingDistributed(ner, stream_name_4, stream_name_4, stream_name_4);
+//                TimeUnit.SECONDS.sleep(20);
+//                dataPreProcessingDistributed(ner, stream_name_2, stream_name_2, stream_name_2);
+//                TimeUnit.SECONDS.sleep(20);
+//                dataPreProcessingDistributed(ner, stream_name_3, stream_name_3, stream_name_3);
+//                TimeUnit.SECONDS.sleep(20);
+//                dataPreProcessingDistributed(ner, stream_name_4, stream_name_4, stream_name_4);
             }
             else if (input.equals("3")) {
                 crowdEstimate(ner, stream_name_1);
@@ -338,13 +338,13 @@ public class VideoAnalyticsMeta {
             }
             else if (input.equals("4")) {
                 filterTimestamps(ner, stream_name_1);
-                TimeUnit.SECONDS.sleep(20);
-                filterTimestamps(ner, stream_name_2);
-                TimeUnit.SECONDS.sleep(20);
-                filterTimestamps(ner, stream_name_3);
-                TimeUnit.SECONDS.sleep(20);
-                filterTimestamps(ner, stream_name_4);
-                TimeUnit.SECONDS.sleep(20);
+//                TimeUnit.SECONDS.sleep(20);
+//                filterTimestamps(ner, stream_name_2);
+//                TimeUnit.SECONDS.sleep(20);
+//                filterTimestamps(ner, stream_name_3);
+//                TimeUnit.SECONDS.sleep(20);
+//                filterTimestamps(ner, stream_name_4);
+//                TimeUnit.SECONDS.sleep(20);
             }
             else if (input.equals("5"))
                 readFromKafka(ner, kafka_source_name);
@@ -352,13 +352,13 @@ public class VideoAnalyticsMeta {
                 readFromKafkaStoreToKafka(ner, kafka_source_name);
             else if (input.equals("7")) {
                 videoFramesPreProcessingWithMap(ner, stream_video_name_1);
-                 TimeUnit.SECONDS.sleep(20);
-                videoFramesPreProcessingWithMap(ner, stream_video_name_2);
-                TimeUnit.SECONDS.sleep(20);
-                videoFramesPreProcessingWithMap(ner, stream_video_name_3);
-                TimeUnit.SECONDS.sleep(20);
-                videoFramesPreProcessingWithMap(ner, stream_video_name_4);
-                TimeUnit.SECONDS.sleep(20);
+//                 TimeUnit.SECONDS.sleep(20);
+//                videoFramesPreProcessingWithMap(ner, stream_video_name_2);
+//                TimeUnit.SECONDS.sleep(20);
+//                videoFramesPreProcessingWithMap(ner, stream_video_name_3);
+//                TimeUnit.SECONDS.sleep(20);
+//                videoFramesPreProcessingWithMap(ner, stream_video_name_4);
+//                TimeUnit.SECONDS.sleep(20);
             }
             else if (input.equals("8"))
                 ageProcessingWithMap(ner, stream_ages_name);
