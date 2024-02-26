@@ -268,8 +268,8 @@ Frameheight,Framewidth and colorspace will be changed.
 The result will be a json string tha will be sunk to a Kafka 
 Producer through flink's Map-Operator.
 
-## Instructions to run 
-In order to run the  code-base OpenCv needs to be installed thats why,
+## Instructions to run  Capture, Processor, Similarity modules 
+In order to run the  code-base OpenCV needs to be installed thats why,
 thats why `install.sh` has been provided under the `video-stream
 -processor` module.
 Then :
