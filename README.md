@@ -10,11 +10,83 @@ text of the image. The processing is handled by Nebulastream which makes uses of
 alongside with OpenCV library to process the input images, and uses the handwriting model for inference.
 The output is again a CSV file with the ocr Text and the real text for each input image.
 
+```java
+    // Classes for Video Frames Pre Processing UDF
+    static class InputImage {
+        String encodedInputImage;
+        String realText;
+    }
+
+    static class OutputText {
+        String ocrText;
+        String realText;
+    }
+
+    static class InputImageMapper implements MapFunction<InputImage, OutputText> {
+
+
+        public OutputText map(final InputImage inputImage) {
+            Model ocrModel = OcrProcessor.loadOCRmodel("/ubidemo/handwriting.model");
+            OutputText outputText = new OutputText();
+            outputText.ocrText = OcrProcessor.processImage(inputImage.encodedInputImage, (ComputationGraph) ocrModel);
+            outputText.realText = inputImage.realText;
+            return outputText;
+        }
+    }
+```
+
+To run: 
+
+```
+cd character-recognition
+mvn clean package
+java -jar target/character-recognition-[version].jar
+```
+
 ## Vulnerabilities-assessor
 
 This module accepts a CSV file with vulnerabilities report generated for a microservice, and uses Nebulastream
 library to performs filter and join operations based on type of vulnerabilities as well as a custom Java UDF 
 to assign the severity level of the vulnerabilty (LOW, MEDIUM, HIGH, CRITICAL, UNKNOWN).
+
+```java
+
+class CvssInput {
+    String name;
+    float cvssscore;
+}
+
+class CvssOutput {
+    String name;
+    String severity;
+}
+
+// This UDF determines the severity level based on the cvssscore
+class CvssScoreToSeverityV2 implements MapFunction<CvssInput, CvssOutput> {
+    public CvssOutput map(final CvssInput input) {
+        CvssOutput output = new CvssOutput();
+        output.name = input.name;
+        if (input.cvssscore >= 0 && input.cvssscore <= 3.9) {
+            output.severity = "LOW";
+        } else if (input.cvssscore >= 4 && input.cvssscore <= 6.9) {
+            output.severity = "MEDIUM";
+        } else if (input.cvssscore >= 7 && input.cvssscore <= 10) {
+            output.severity = "HIGH";
+        } else {
+            output.severity = "UNKNOWN"; // cvssscore is out of expected range
+        }
+        return output;
+    }
+}
+```
+
+To run:
+
+```
+cd vulnerabilities-assessor
+mvn clean package
+java -jar target/vulnerabilities-assessor-[version].jar
+```
 
 ## Video-meta-analytics-module
 
