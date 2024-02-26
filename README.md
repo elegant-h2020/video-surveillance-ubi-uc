@@ -2,6 +2,20 @@
 
 A collection of modules reqarding the ELEGANT project
 
+## Character-Recognition module 
+
+This module utilizes a pre-trained handwriting model to recognize and extract text from images. The 
+input is given as a CSV file which contains rows of Base64 encoded images along with the ground truth
+text of the image. The processing is handled by Nebulastream which makes uses of a Java UDF Mapper 
+alongside with OpenCV library to process the input images, and uses the handwriting model for inference.
+The output is again a CSV file with the ocr Text and the real text for each input image.
+
+## Vulnerabilities-assessor
+
+This module accepts a CSV file with vulnerabilities report generated for a microservice, and uses Nebulastream
+library to performs filter and join operations based on type of vulnerabilities as well as a custom Java UDF 
+to assign the severity level of the vulnerabilty (LOW, MEDIUM, HIGH, CRITICAL, UNKNOWN).
+
 ## Video-meta-analytics-module
 
 This module utilizes the NebulaStream Java Client to connect to a running nebulastream configuration

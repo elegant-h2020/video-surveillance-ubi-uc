@@ -17,6 +17,7 @@
         <module>video-stream-capture</module>
         <module>character-recognition</module>
 		<module>character-recognition</module>
-	</modules>
+        <module>vulnerabilities-assessor</module>
+    </modules>
 	
 </project>
