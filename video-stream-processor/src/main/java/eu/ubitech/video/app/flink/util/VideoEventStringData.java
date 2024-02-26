@@ -6,8 +6,8 @@ import java.io.Serializable;
  * Java Bean to hold JSON message
  */
 public class VideoEventStringData implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
+//    private static final long serialVersionUID = 1L;
+
     private String cameraId;
     private String timestamp;
     private int rows;
@@ -49,6 +49,18 @@ public class VideoEventStringData implements Serializable {
         return data;
     }
     public void setData(String data) {
+        this.data = data;
+    }
+
+    public VideoEventStringData() {
+    }
+
+    public VideoEventStringData(String cameraId, String timestamp, int rows, int cols, int type, String data) {
+        this.cameraId = cameraId;
+        this.timestamp = timestamp;
+        this.rows = rows;
+        this.cols = cols;
+        this.type = type;
         this.data = data;
     }
 }

@@ -5,25 +5,27 @@ import org.opencv.core.Point;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Class containing all the information
+ * of frame processed anlong with the
+ * encoded image in base64
+ */
 public class VideoEventStringProcessed  {
-    private List<Point> lista ;
-    private String cameraId;
-    private String timestamp;
-    private int rows;
-    private int cols;
-    private int type;
-    private String data;
+    //    private List<Point> lista ;
+    String data;
+    String cameraId;
+    String timestamp;
+    int rows;
+    int cols;
+    int type;
 
-
-
-    public List<Point> getLista() {
-        return lista;
-    }
-
-    public void setLista(List<Point> lista) {
-        this.lista = lista;
-    }
+//    public List<Point> getLista() {
+//        return lista;
+//    }
+//
+//    public void setLista(List<Point> lista) {
+//        this.lista = lista;
+//    }
 
     public String getCameraId() {
         return cameraId;
@@ -62,16 +64,27 @@ public class VideoEventStringProcessed  {
         this.data = data;
     }
 
-
-    public VideoEventStringProcessed(String cameraId, String timestamp ,int rows, int cols, int type, String data, List<Point> lista3) {
+    /**
+     * Create the class conaining all metadata-info
+     * @param cameraId
+     * @param timestamp
+     * @param rows number of rows
+     * @param cols number of cols in image
+     * @param type colorspace
+     * @param data encoded (base64) image in string format
+    //     * @param lista3 list of points needed to locate a face (top-right and bottom-left)
+     */
+    public VideoEventStringProcessed(String cameraId, String timestamp ,int rows, int cols, int type, String data) {
         this.cameraId = cameraId;
         this.timestamp=timestamp;
         this.rows=rows;
         this.cols=cols;
         this.type=type;
         this.data=data;
-        this.lista= new LinkedList<Point>();
-        this.lista.addAll(lista3);
+//        this.lista= new LinkedList<Point>();
+//        this.lista.addAll(lista3);
     }
 
+    public VideoEventStringProcessed() {
+    }
 }
