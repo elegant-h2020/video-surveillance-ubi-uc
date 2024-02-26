@@ -14,7 +14,7 @@ public class OcrElegantUseCase {
         Query worker = ner.readFromSource(stream_name);
 
         // Project Operator chained with Map (Java UDF) operator
-        worker.project(attribute("frame"), attribute("number"))
+        worker.project(attribute("encodedInputImage"), attribute("realText"))
                 .map(new InputImageMapper());
 
         // Sink Operator (FileSink)
@@ -39,9 +39,9 @@ public class OcrElegantUseCase {
 
     static class InputImageMapper implements MapFunction<InputImage, OutputText> {
 
-        Model ocrModel = OcrProcessor.loadOCRmodel("/ubidemo/handwriting.model");
 
         public OutputText map(final InputImage inputImage) {
+            Model ocrModel = OcrProcessor.loadOCRmodel("/ubidemo/handwriting.model");
             OutputText outputText = new OutputText();
             outputText.ocrText = OcrProcessor.processImage(inputImage.encodedInputImage, (ComputationGraph) ocrModel);
             outputText.realText = inputImage.realText;
@@ -56,7 +56,7 @@ public class OcrElegantUseCase {
         // Configure network connection to NES REST server
         System.out.println(" *** connection:\n");
         NebulaStreamRuntime ner = NebulaStreamRuntime.getRuntime();
-        ner.getConfig().setHost("192.168.7.40").setPort("8081");
+        ner.getConfig().setHost("localhost").setPort("8081");
         System.out.println(" *** connected:\n");
 
 
